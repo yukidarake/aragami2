@@ -210,7 +210,7 @@ def initialize():
     rows = cur.fetchall()
     for row in rows:
         ip = row['ip']
-            banned_ips[ip] = count_failure_by_ip(ip)
+        banned_ips[ip] = count_failure_by_ip(ip)
     response = jsonify(banned_ips)
     response.status_code = 200
     return response
