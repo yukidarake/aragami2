@@ -7,10 +7,11 @@ from flask import (
 )
 from werkzeug.contrib.fixers import ProxyFix
 
-import os, hashlib
-from datetime import date
+import os
+import hashlib
+# from datetime import date
 
-banned_ips = {}
+banned_ip_dic = {}
 config = {}
 app = Flask(__name__, static_url_path='')
 app.wsgi_app = ProxyFix(app.wsgi_app)
@@ -19,8 +20,8 @@ app.secret_key = os.environ.get('ISU4_SESSION_SECRET', 'shirokane')
 def load_config():
     global config
     config = {
-         'user_lock_threshold': int(os.environ.get('ISU4_USER_LOCK_THRESHOLD', 3)),
-         'ip_ban_threshold': int(os.environ.get('ISU4_IP_BAN_THRESHOLD', 10))
+        'user_lock_threshold': int(os.environ.get('ISU4_USER_LOCK_THRESHOLD', 3)),
+        'ip_ban_threshold': int(os.environ.get('ISU4_IP_BAN_THRESHOLD', 10))
     }
     return config
 
@@ -210,8 +211,8 @@ def initialize():
     rows = cur.fetchall()
     for row in rows:
         ip = row['ip']
-        banned_ips[ip] = count_failure_by_ip(ip)
-    response = jsonify(banned_ips)
+        banned_ip_dic[ip] = count_failure_by_ip(ip)
+    response = jsonify(banned_ip_dic)
     response.status_code = 200
     return response
 
